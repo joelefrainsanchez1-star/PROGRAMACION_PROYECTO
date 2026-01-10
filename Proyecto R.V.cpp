@@ -39,7 +39,9 @@ void menuPrincipal(int opcion){
 		}
 	}while(opcion != 0);
 }
+void ingresar(){
 
+}
 
 
 int main(){
@@ -49,4 +51,5 @@ int main(){
 	
 	
 	return 0;
+
 }
