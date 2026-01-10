@@ -1,9 +1,9 @@
 //Integrantes:
-//-Villa Proaño Roddik Estift
+//-Villa ProaÃ±o Roddik Estift
 //-Estrada Velazco Anderson Jose
 //-Sanchez Sanchez Joel Efrain
 //Tema:
-//Sistema CRUD de gestión y clasificación de música
+//Sistema CRUD de gestiÃ³n y clasificaciÃ³n de mÃºsica
 
 
 #include <iostream>
@@ -13,6 +13,9 @@ using namespace std;
 
 void mostrarRegistros(){
 	
+}
+void IngresarCancion(){
+
 }
 
 void editar
@@ -57,3 +60,4 @@ int main(){
 	
 	return 0;
 }
+
