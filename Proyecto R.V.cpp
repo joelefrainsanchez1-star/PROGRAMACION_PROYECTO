@@ -42,7 +42,7 @@ void menuPrincipal(int opcion){
 		}
 	}while(opcion != 0);
 }
-void ingresar(){
+void ingresarCancion(){
 
 }
 
@@ -56,4 +56,5 @@ int main(){
 	return 0;
 
 }
+
 
