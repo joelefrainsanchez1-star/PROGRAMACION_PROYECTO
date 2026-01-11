@@ -15,7 +15,7 @@ struct cancion{
 	int id;
 	double duracion;
 };
-
+//-------------------- INGRESAR ----------------------
 void IngresarCancion(vector<cancion> &s){
 	cancion song;
 	ofstream archivo("music.txt", ios::app);
@@ -36,8 +36,8 @@ void IngresarCancion(vector<cancion> &s){
 	
 	cout<<"-Cancion Registrada con Exito-"<<endl;
 }
-
-void mostrarRegistro(vector<cancion> s){
+//------------- MOSTRAR ------------------------------
+void mostrarRegistro(vector<cancion>& s){
 	cout<<"\n-Registro de canciones-"<<endl;
 	
 	for(auto song : s){
@@ -50,10 +50,68 @@ void mostrarRegistro(vector<cancion> s){
 	
 	
 }
-//void editar(){
-//	
-//}
+//----------EDITAR-------------------------------------------------------
+void editarCancion(vector<cancion>& s) {
+	int id;
+	cout << "Ingrese el ID de la cancion a editar...\nID:";
+	cout << "ID: ";
+	cin >> id;
 
+	for (size_t i = 0; i < s.size(); i++) {
+		if (s[i].id == id) {
+			string nombreC, nombreA, Genero, duracion;
+			int opcion;
+			cout << "Ingresar que desea cambiar..\n" <<
+				"1.- Nombre de la cancion\n" <<
+				"2.- Artista\n" <<
+				"3.- Genero\n" <<
+				"4.- Duracion\n" <<
+				"Ingresar una opcion :";
+			cin >> opcion;
+			cin.ignore();
+			cout << "Ingresar ...\n";
+			switch (opcion){
+			case 1:
+				cout << "Nuevo Nombre de la cancion: ";
+				getline(cin, nombreC);
+				s[i].nombre = nombreC;
+				break;
+			case 2:
+				cout << "Nuevo Artista: ";
+				getline(cin, nombreA);
+				s[i].artista = nombreA;
+				break;
+			case 3:
+				cout << "Genero de de la cancion: ";
+				getline(cin, Genero);
+				s[i].genero = Genero;
+				break;
+			case 4:
+				cout << "Duracion (hh:mm): ";
+				cin >> duracion;
+				s[i].duracion = duracion;
+				break;
+			}
+			break;
+		}
+	}
+}
+//-------------- ELIMINAR ------------------------------------------------------------
+void eliminarCancion(vector<cancion>& s) {
+	int id;
+	cout << "Ingrese el ID de la cancion a eliminar...\nID:";
+	cout << "ID: ";
+	cin >> id;
+	for (size_t i = 0; i < s.size(); i++) {
+		if (s[i].id == id) {
+			cout << "Eliminando " << s[i].nombre << " de " << s[i].artista << endl;
+			s.erase(s.begin() + i);
+			cout << "Cancion eliminada\n";
+			break;
+		}
+	}
+}
+//----------------- MENU -------------------------------------------------------
 void menuPrincipal(vector<cancion> &s){
 	
 	int opcion;
@@ -76,8 +134,10 @@ void menuPrincipal(vector<cancion> &s){
 				mostrarRegistro(s);
 				break;
 			case 3:
+				editarCancion(s);
 				break;
 			case 4:
+				eliminarCancion(s);
 				break;
 			case 5:
 				break;
@@ -98,3 +158,4 @@ int main(){
 	
 	return 0;
 }
+
