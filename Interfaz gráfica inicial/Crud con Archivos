@@ -1,0 +1,230 @@
+/*
+Integrantes:
+- Villa Proaño Roddik Estift
+- Estrada Velazco Anderson Jose
+- Sanchez Sanchez Joel Efrain
+
+Tema:
+Sistema CRUD de gestión y clasificación de música
+*/
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <clocale>
+
+using namespace std;
+
+//-------------------- ESTRUCTURA --------------------
+struct cancion {
+    int id;
+    string nombre;
+    string artista;
+    string genero;
+    string duracion;
+};
+
+//-------------------- ARCHIVOS ----------------------
+
+// Leer archivo -> vector
+void cargarDesdeArchivo(vector<cancion>& s) {
+    s.clear();
+    ifstream archivo("music.txt");
+    string linea;
+
+    if (!archivo.is_open()) return;
+
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        cancion song;
+        string aux;
+
+        getline(ss, aux, ';'); song.id = stoi(aux);
+        getline(ss, song.nombre, ';');
+        getline(ss, song.artista, ';');
+        getline(ss, song.genero, ';');
+        getline(ss, song.duracion, ';');
+
+        s.push_back(song);
+    }
+
+    archivo.close();
+}
+
+// Vector -> archivo
+void guardarEnArchivo(const vector<cancion>& s) {
+    ofstream archivo("music.txt");
+
+    for (auto song : s) {
+        archivo << song.id << ";"
+                << song.nombre << ";"
+                << song.artista << ";"
+                << song.genero << ";"
+                << song.duracion << endl;
+    }
+
+    archivo.close();
+}
+
+//-------------------- CREATE ------------------------
+void IngresarCancion(vector<cancion>& s) {
+    cargarDesdeArchivo(s);
+    cancion song;
+
+    cout << "\n--- REGISTRAR CANCION ---\n";
+    cout << "ID: ";
+    cin >> song.id;
+    cin.ignore();
+
+    for (auto c : s) {
+        if (c.id == song.id) {
+            cout << "ERROR: ID ya existe.\n";
+            return;
+        }
+    }
+
+    cout << "Nombre: ";
+    getline(cin, song.nombre);
+    cout << "Artista: ";
+    getline(cin, song.artista);
+    cout << "Genero: ";
+    getline(cin, song.genero);
+    cout << "Duracion (mm:ss): ";
+    getline(cin, song.duracion);
+
+    s.push_back(song);
+    guardarEnArchivo(s);
+
+    cout << "Cancion registrada con exito.\n";
+}
+
+//-------------------- READ --------------------------
+void mostrarRegistro(vector<cancion>& s) {
+    cargarDesdeArchivo(s);
+
+    if (s.empty()) {
+        cout << "\nNo hay canciones registradas.\n";
+        return;
+    }
+
+    cout << "\n--- REGISTRO DE CANCIONES ---\n";
+    for (auto song : s) {
+        cout << "ID: " << song.id << endl;
+        cout << "Nombre: " << song.nombre << endl;
+        cout << "Artista: " << song.artista << endl;
+        cout << "Genero: " << song.genero << endl;
+        cout << "Duracion: " << song.duracion << endl;
+        cout << "----------------------------\n";
+    }
+}
+
+//-------------------- UPDATE ------------------------
+void editarCancion(vector<cancion>& s) {
+    cargarDesdeArchivo(s);
+    int id;
+    cout << "\nID de la cancion a editar: ";
+    cin >> id;
+    cin.ignore();
+
+    for (auto& song : s) {
+        if (song.id == id) {
+            cout << "Nuevo nombre: ";
+            getline(cin, song.nombre);
+            cout << "Nuevo artista: ";
+            getline(cin, song.artista);
+            cout << "Nuevo genero: ";
+            getline(cin, song.genero);
+            cout << "Nueva duracion: ";
+            getline(cin, song.duracion);
+
+            guardarEnArchivo(s);
+            cout << "Cancion actualizada.\n";
+            return;
+        }
+    }
+
+    cout << "Cancion no encontrada.\n";
+}
+
+//-------------------- DELETE ------------------------
+void eliminarCancion(vector<cancion>& s) {
+    cargarDesdeArchivo(s);
+    int id;
+    cout << "\nID de la cancion a eliminar: ";
+    cin >> id;
+
+    for (size_t i = 0; i < s.size(); i++) {
+        if (s[i].id == id) {
+            s.erase(s.begin() + i);
+            guardarEnArchivo(s);
+            cout << "Cancion eliminada.\n";
+            return;
+        }
+    }
+
+    cout << "Cancion no encontrada.\n";
+}
+
+//----------------- DELETE GENERO --------------------
+void eliminarGenero(vector<cancion>& s) {
+    cargarDesdeArchivo(s);
+    string gen;
+    cout << "\nGenero a eliminar: ";
+    cin.ignore();
+    getline(cin, gen);
+
+    bool eliminado = false;
+
+    for (size_t i = 0; i < s.size();) {
+        if (s[i].genero == gen) {
+            s.erase(s.begin() + i);
+            eliminado = true;
+        } else {
+            i++;
+        }
+    }
+
+    if (eliminado) {
+        guardarEnArchivo(s);
+        cout << "Genero eliminado correctamente.\n";
+    } else {
+        cout << "No se encontraron canciones con ese genero.\n";
+    }
+}
+
+//-------------------- MENU --------------------------
+void menuPrincipal(vector<cancion>& s) {
+    int opcion;
+
+    do {
+        cout << "\n===== GESTION Y CLASIFICACION DE MUSICA =====\n";
+        cout << "1. Ingresar cancion\n";
+        cout << "2. Mostrar canciones\n";
+        cout << "3. Editar cancion\n";
+        cout << "4. Eliminar cancion\n";
+        cout << "5. Eliminar genero\n";
+        cout << "0. Salir\n";
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: IngresarCancion(s); break;
+            case 2: mostrarRegistro(s); break;
+            case 3: editarCancion(s); break;
+            case 4: eliminarCancion(s); break;
+            case 5: eliminarGenero(s); break;
+            case 0: cout << "Saliendo del sistema...\n"; break;
+            default: cout << "Opcion invalida.\n";
+        }
+    } while (opcion != 0);
+}
+
+//-------------------- MAIN --------------------------
+int main() {
+    setlocale(LC_ALL, "");
+    vector<cancion> canciones;
+    menuPrincipal(canciones);
+    return 0;
+}
