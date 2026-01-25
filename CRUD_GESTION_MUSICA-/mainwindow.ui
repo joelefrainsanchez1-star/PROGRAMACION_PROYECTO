@@ -814,8 +814,11 @@ QPushButton:pressed {
           <height>20</height>
          </rect>
         </property>
+        <property name="text">
+         <string/>
+        </property>
         <property name="maxLength">
-         <number>2</number>
+         <number>5</number>
         </property>
         <property name="placeholderText">
          <string>mm/ss</string>

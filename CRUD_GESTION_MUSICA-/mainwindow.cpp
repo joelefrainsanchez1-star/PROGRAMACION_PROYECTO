@@ -1,10 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <fstream>
 #include <sstream>
 #include <QMessageBox>
-
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,10 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setWindowIcon(QIcon(":/new/prefix1/icons/icono_musica2.ico"));
+
     ui->stackedWidget->setCurrentIndex(0);
     ui->tableWidget->setColumnCount(5);
     ui->tableWidget->setHorizontalHeaderLabels(
-        {"ID", "Nombre", "Artista", "Genero", "Duracion"}
+        {" ID ", " Nombre ", " Artista ", " Género ", " Duración "}
         );
 
     cargarArchivo();
@@ -28,8 +28,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// ---------------- ARCHIVOS ----------------
-
+// archivoss
 void MainWindow::cargarArchivo() {
     canciones.clear();
     ifstream file("music.txt");
@@ -61,13 +60,19 @@ void MainWindow::guardarArchivo() {
     }
 }
 
-// ---------------- TABLA ----------------
-
+//entrada y salida
 void MainWindow::on_btnEntrar_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
 }
 
+void MainWindow::on_btnSalir_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+//tabla
 void MainWindow::mostrarTabla() {
     ui->tableWidget->setRowCount(canciones.size());
 
@@ -80,8 +85,13 @@ void MainWindow::mostrarTabla() {
     }
 }
 
-// ---------------- CRUD ----------------
+void MainWindow::on_btnMostrar_clicked()
+{
+    cargarArchivo();
+    mostrarTabla();
+}
 
+//crud y funciones
 void MainWindow::on_btnAgregar_clicked() {
     Cancion c;
     c.id = canciones.empty() ? 1 : canciones.back().id + 1;
@@ -93,7 +103,6 @@ void MainWindow::on_btnAgregar_clicked() {
 
     canciones.push_back(c);
     guardarArchivo();
-    mostrarTabla();
 }
 
 void MainWindow::on_btnEliminar_clicked() {

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/"/>
+    <qresource prefix="/new/prefix1">
+        <file>icons/icono_musica.ico</file>
+        <file>icons/icono_musica2.ico</file>
+    </qresource>
+</RCC>
