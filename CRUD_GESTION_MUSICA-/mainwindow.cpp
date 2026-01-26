@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <QMessageBox>
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -18,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->setHorizontalHeaderLabels(
         {" ID ", " Nombre ", " Artista ", " Género ", " Duración "}
         );
+
+        ui->tableWidget->verticalHeader()->setVisible(true); //PONER false, quita la numeracion de la tabla
 
     cargarArchivo();
     mostrarTabla();
@@ -114,14 +117,16 @@ void MainWindow::on_btnEliminar_clicked() {
     mostrarTabla();
 }
 
+// Boton para que la funcion editar, tome en cuenta solo las casillas llenas
+
 void MainWindow::on_btnEditar_clicked() {
     int fila = ui->tableWidget->currentRow();
     if (fila < 0) return;
+    if (!(ui -> txtNombre -> text().isEmpty())){canciones[fila].nombre   = ui->txtNombre->text().toStdString();}
+    if (!(ui -> txtArtista -> text().isEmpty())){canciones[fila].artista   = ui->txtArtista->text().toStdString();}
+    if (!(ui -> txtGenero -> text().isEmpty())){canciones[fila].genero   = ui->txtGenero->text().toStdString();}
+    if (!(ui -> txtDuracion -> text().isEmpty())){canciones[fila].duracion = ui->txtDuracion->text().toStdString();}
 
-    canciones[fila].nombre   = ui->txtNombre->text().toStdString();
-    canciones[fila].artista  = ui->txtArtista->text().toStdString();
-    canciones[fila].genero   = ui->txtGenero->text().toStdString();
-    canciones[fila].duracion = ui->txtDuracion->text().toStdString();
 
     guardarArchivo();
     mostrarTabla();

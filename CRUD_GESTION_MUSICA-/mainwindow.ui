@@ -789,7 +789,7 @@ QPushButton:pressed {
          </rect>
         </property>
         <property name="placeholderText">
-         <string>Ingresar nombre cancion</string>
+         <string>Ingresar nombre canción</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="txtArtista">
